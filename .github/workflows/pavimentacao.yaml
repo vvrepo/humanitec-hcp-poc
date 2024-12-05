@@ -19,9 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: test
-        run: ls -lha quickstart
-
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -31,7 +28,6 @@ jobs:
         run: |
           chmod -R +x ./scripts/
           ./scripts/create-cluster/create-cluster-${{ env.CLOUD }}.sh
-        working-directory: quickstart
 
       - name: Install Humanitec CLI
         run: |
@@ -48,29 +44,22 @@ jobs:
           humctl version
 
           humctl login
-        working-directory: quickstart
 
       - name: Connect Cluster to Humanitec
         run: |
           ./scripts/connect-your-cluster/cloudaccount-${{ env.CLOUD }}.sh
-        working-directory: quickstart
 
       - name: Create Cloud Account
         run: humctl get resource-account quickstart-${{ env.CLOUD }} -o yaml
-        working-directory: quickstart
 
       - name: Check Cloud Account
         run: humctl resources check-account quickstart-${{ env.CLOUD }}
-        working-directory: quickstart
 
       - name: Create cluster access for Humanitec
         run: . ./scripts/connect-your-cluster/clusteraccess-${{ env.CLOUD }}.sh
-        working-directory: quickstart
 
       - name: Create cluster resource definition
         run: . ./scripts/connect-your-cluster/create-resdef-${{ env.CLOUD }}.sh
-        working-directory: quickstart
 
       - name: Install resource definition
         run: humctl apply -f resdef-${{ env.CLOUD }}.yaml
-        working-directory: quickstart
