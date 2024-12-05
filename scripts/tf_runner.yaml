@@ -1,0 +1,28 @@
+---
+apiVersion: entity.humanitec.io/v1b1
+kind: Definition
+metadata:
+  id: config-tf-runner
+entity:
+  name: Config For TF Runner
+  type: config
+  driver_type: humanitec/template
+  driver_inputs:
+    values:
+      templates:
+        outputs:
+          runner:
+            account: piloto/Quickstart Azure
+            cluster:
+              loadbalancer: 172.179.76.17
+              name: Quickstart-AKS-749a92
+            cluster_type: aks
+            namespace: humanitec-terraform
+            service_account: quickstart-azure
+        secrets: |
+          agent_url: {{ .driver.secrets.agent_url }}
+    secrets:
+      agent_url: ${resources.agent.outputs.url}
+  criteria:
+  - env_type: development
+    res_id: tf-runner
