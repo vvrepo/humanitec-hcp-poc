@@ -2,7 +2,7 @@
 
 # Define the naming of the managed identity you are going to create for the Cloud Account
 export MANAGED_IDENTITY_NAME=quickstart-azure-cloudaccount
-
+MANAGED_IDENTITY_RESOURCE_GROUP="Quickstart-AKS-749a92"
 # Define the naming of the new Cloud Account
 export CLOUD_ACCOUNT_NAME="Quickstart Azure"
 export CLOUD_ACCOUNT_ID=quickstart-azure
