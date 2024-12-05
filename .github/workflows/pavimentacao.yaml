@@ -2,8 +2,19 @@
 
 name: Pavimentaçao POC Humanitec e HCP
 
+on:
+  workflow_dispatch:
+
+env:
+  CLOUD: azure
+  HUMANITEC_ORG: piloto
+  HUMANITEC_TOKEN: ${{ secrets.HUMANITEC_TOKEN }}
+  HUMANITEC_APP: quickstart
+  HUMANITEC_ENV: development
+
 jobs:
   install-cluster-aks:
+    runs-on: ubuntu-latest
     steps:
 
       - name: Azure Login
@@ -11,9 +22,51 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Quickstart Humanitec
+      - name: Create AKS Quickstart Humanitec
         run: |
-          export CLOUD=azure
           git clone https://github.com/humanitec-tutorials/quickstart.git
           cd quickstart
           chmod -R +x ./scripts/
+          ./scripts/create-cluster/create-cluster-${{ env.CLOUD }}.sh
+
+      - name: Install Humanitec CLI
+        run: |
+          curl -fLO https://github.com/humanitec/cli/releases/download/v0.34.0/cli_0.34.0_linux_amd64.tar.gz
+          tar xvzf cli_0.34.0_linux_amd64.tar.gz
+          rm cli_0.34.0_linux_amd64.tar.gz README.md
+
+          sudo install -o root -g root -m 0755 humctl /usr/local/bin/humctl
+
+          chmod +x humctl
+          mkdir -p ~/.local/bin
+          mv ./humctl ~/.local/bin/humctl
+
+          humctl version
+
+          humctl login
+        working-directory: quickstart
+
+      - name: Connect Cluster to Humanitec
+        run: |
+          ./scripts/connect-your-cluster/cloudaccount-${{ env.CLOUD }}.sh
+        working-directory: quickstart
+
+      - name: Create Cloud Account
+        run: humctl get resource-account quickstart-${{ env.CLOUD }} -o yaml
+        working-directory: quickstart
+
+      - name: Check Cloud Account
+        run: humctl resources check-account quickstart-${{ env.CLOUD }}
+        working-directory: quickstart
+
+      - name: Create cluster access for Humanitec
+        run: . ./scripts/connect-your-cluster/clusteraccess-${{ env.CLOUD }}.sh
+        working-directory: quickstart
+
+      - name: Create cluster resource definition
+        run: . ./scripts/connect-your-cluster/create-resdef-${{ env.CLOUD }}.sh
+        working-directory: quickstart
+
+      - name: Install resource definition
+        run: humctl apply -f resdef-${{ env.CLOUD }}.yaml
+        working-directory: quickstart
