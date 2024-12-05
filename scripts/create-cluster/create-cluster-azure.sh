@@ -6,7 +6,7 @@ export AKS_QUICKSTART_REGION=westus2
 ##################################
 # Do not change anything from here
 ##################################
-export AKS_RANDOM=$(openssl rand -hex 3)
+export AKS_RANDOM=749a92
 export AKS_QUICKSTART_RESOURCE_GROUP_NAME=Quickstart-AKS-${AKS_RANDOM}
 export AKS_QUICKSTART_CLUSTER_NAME=Quickstart-AKS-${AKS_RANDOM}
 
@@ -30,7 +30,7 @@ az aks get-credentials \
   --overwrite-existing
 
 # Add role assignments for current user
-export AZ_SIGNED_IN_USER_ID=$(az ad signed-in-user show --query id -o tsv)
+export AZ_SIGNED_IN_USER_ID=dce55e2f-ce0e-4314-99c0-043388ef6ecf
 export AKS_QUICKSTART_CLUSTER_ID=$(az aks show -n ${AKS_QUICKSTART_CLUSTER_NAME} -g ${AKS_QUICKSTART_RESOURCE_GROUP_NAME} --query id -o tsv)
 
 az role assignment create \
