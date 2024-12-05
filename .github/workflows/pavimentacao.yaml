@@ -8,7 +8,6 @@ on:
 env:
   CLOUD: azure
   HUMANITEC_ORG: piloto
-  HUMANITEC_TOKEN: ${{ secrets.HUMANITEC_TOKEN }}
   HUMANITEC_APP: quickstart
   HUMANITEC_ENV: development
 
@@ -43,7 +42,7 @@ jobs:
 
           humctl version
 
-          humctl login
+          humctl login --token ${{ secrets.HUMANITEC_TOKEN }}
 
       - name: Connect Cluster to Humanitec
         run: |
