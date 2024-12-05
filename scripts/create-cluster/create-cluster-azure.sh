@@ -1,7 +1,7 @@
 #####################################
 # Set these variables before starting
 #####################################
-export AKS_QUICKSTART_REGION= westus2
+export AKS_QUICKSTART_REGION=westus2
 
 ##################################
 # Do not change anything from here
