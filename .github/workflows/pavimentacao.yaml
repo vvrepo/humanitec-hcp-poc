@@ -1,0 +1,19 @@
+---
+
+name: Pavimentaçao POC Humanitec e HCP
+
+jobs:
+  install-cluster-aks:
+    steps:
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Quickstart Humanitec
+        run: |
+          export CLOUD=azure
+          git clone https://github.com/humanitec-tutorials/quickstart.git
+          cd quickstart
+          chmod -R +x ./scripts/
