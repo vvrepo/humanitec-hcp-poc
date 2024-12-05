@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: test
-        run: ls -lha
+        run: ls -lha quickstart
 
       - name: Azure Login
         uses: azure/login@v2
