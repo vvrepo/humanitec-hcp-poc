@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: test
+        run: ls -lha
+
       - name: Azure Login
         uses: azure/login@v2
         with:
