@@ -11,12 +11,15 @@ env:
   HUMANITEC_TOKEN: ${{ secrets.HUMANITEC_TOKEN }}
   HUMANITEC_APP: quickstart
   HUMANITEC_ENV: development
-  AKS_QUICKSTART_REGION: westus2
 
 jobs:
   install-cluster-aks:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
 
       - name: Azure Login
         uses: azure/login@v2
@@ -25,10 +28,9 @@ jobs:
 
       - name: Create AKS Quickstart Humanitec
         run: |
-          git clone https://github.com/humanitec-tutorials/quickstart.git
-          cd quickstart
           chmod -R +x ./scripts/
           ./scripts/create-cluster/create-cluster-${{ env.CLOUD }}.sh
+        working-directory: quickstart
 
       - name: Install Humanitec CLI
         run: |
