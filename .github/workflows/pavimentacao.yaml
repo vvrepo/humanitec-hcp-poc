@@ -11,6 +11,7 @@ env:
   HUMANITEC_TOKEN: ${{ secrets.HUMANITEC_TOKEN }}
   HUMANITEC_APP: quickstart
   HUMANITEC_ENV: development
+  AKS_QUICKSTART_REGION: westus2
 
 jobs:
   install-cluster-aks:
